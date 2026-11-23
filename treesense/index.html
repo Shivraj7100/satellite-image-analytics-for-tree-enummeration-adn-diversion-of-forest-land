@@ -1,159 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
-    />
-    <meta
-      name="description"
-      content="Your solution for accurate tree enumeration"
-    />
-    <title>TreeSense Imaging</title>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="TreeSense satellite and aerial imagery analytics for tree enumeration and forest-land assessment.">
+  <title>TreeSense — Forest Analytics</title>
+  <link rel="icon" href="public/images/favicon.ico">
+  <link rel="stylesheet" href="src/assets/css/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="index.html" aria-label="TreeSense home">
+        <img src="public/images/treeicon.png" alt="">
+        <span>TreeSense</span>
+      </a>
+      <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+      <nav class="nav" aria-label="Main navigation">
+        <a class="active" href="index.html">Home</a>
+        <a href="predict.html">Analytics</a>
+        <a href="historical_data.html">Climate</a>
+      </nav>
+    </div>
+  </header>
 
-    <!-- OG -->
-    <meta property="og:site_name" content="TreeSense Imaging" />
-    <meta property="og:title" content="TreeSense Imaging" />
-    <meta property="og:url" content="http://treesense.vipulchaturvedi.com/" />
-    <meta property="og:type" content="website" />
-    <meta
-      property="og:description"
-      content="Your solution for accurate tree enumeration"
-    />
-    <meta property="og:image" content="https://i.imgur.com/43l43ve.png" />
-    <!-- ... -->
-
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:site" content="http://treesense.vipulchaturvedi.com" />
-    <meta name="twitter:title" content="TreeSense Imaging" />
-    <meta
-      name="twitter:description"
-      content="Your solution for accurate tree enumeration"
-    />
-    <meta name="twitter:image:src" content="https://i.imgur.com/43l43ve.png" />
-    <!-- ... -->
-
-    <!-- Favicon -->
-    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
-    <link rel="apple-touch-icon" href="/images/apple-touch-icon.png" />
-    <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href="/images/apple-touch-icon-180x180.png"
-    />
-
-    <!-- Stylesheets -->
-    <link
-      rel="stylesheet"
-      href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,700"
-      type="text/css"
-    />
-    <link rel="stylesheet" href="/src/assets/css/styles.css" />
-
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/daisyui@3.9.3/dist/full.min.css"
-    />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              clifford: "#da373d",
-            },
-          },
-        },
-      };
-    </script>
-  </head>
-  <body class="bg-gray-100 font-sans">
-    <!-- Header -->
-    <header class="bg-blue-500 py-4">
-      <div class="container mx-auto flex items-center justify-between">
-        <h1 class="text-white text-2xl font-semibold flex items-center">
-          <img
-            src="./public/images/treeicon.png"
-            class="w-8 h-8 mr-2"
-            alt="TreeSense Imaging logo"
-          />
-          TreeSense Imaging
-        </h1>
-
-        <div class="md:hidden">
-          <!-- Mobile menu button -->
-          <div class="hamburger-icon">
-            <div class="bar"></div>
-            <div class="bar"></div>
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <span class="eyebrow">Satellite intelligence</span>
+          <h1>Understand every hectare.</h1>
+          <p>Explore tree cover, enumerate trees, identify vegetation patterns, and assess environmental change from one focused workspace.</p>
+          <div class="hero-actions">
+            <a class="btn" href="predict.html">Open analytics</a>
+            <a class="btn btn-secondary" href="historical_data.html">View climate data</a>
           </div>
         </div>
-      </div>
-    </header>
-
-    <!-- Main Content -->
-    <main class="container mx-auto py-8">
-      <!-- Hero Section -->
-      <section id="hero" class="bg-gray-100 p-8 text-center">
-        <h1 class="text-4xl font-bold mb-4">
-          Your solution for accurate tree enumeration
-        </h1>
-        <p class="text-gray-600">
-          TreeSense is an open service for Tree Enumeration to provide access to
-          visualizations or interactive interfaces that allow users to explore
-          and interpret the results easily.
-        </p>
-        <a href="././predict.html" class="block mx-auto mt-4 btn btn-primary"
-          >Get Started</a
-        >
-      </section>
-
-      <!-- Stats Section -->
-      <section class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div class="bg-white p-4 text-center shadow-lg rounded-lg">
-          <h3 class="text-xl font-semibold mb-2">Efficient Image Processing</h3>
-        </div>
-        <div class="bg-white p-4 text-center shadow-lg rounded-lg">
-          <h3 class="text-xl font-semibold mb-2">
-            Tree Species Categorization
-          </h3>
-        </div>
-        <div class="bg-white p-4 text-center shadow-lg rounded-lg">
-          <h3 class="text-xl font-semibold mb-2">
-            Valuable Insights for Decision Making
-          </h3>
-        </div>
-      </section>
-
-      <!-- Panoramic Section -->
-      <section class="py-8">
-        <img
-          src="./public/images/panaromic.png"
-          alt="Panoramic view"
-          class="mx-auto"
-        />
-      </section>
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-gray-200 py-4">
-      <div class="container mx-auto flex justify-between items-center">
-        <p class="text-gray-600">&copy; 2023 Treesense Imaging</p>
-        <div class="space-x-4">
-          <a href="ligadedipak8@gmail.com" class="text-blue-500">Contact</a>
-          <a href="/legal" class="text-blue-500">Terms</a>
+        <div class="hero-visual">
+          <img src="public/images/panaromic.png" alt="Forest landscape panorama">
         </div>
       </div>
-      <div class="container mx-auto text-center">
-        <p class="text-gray-600">
-          Made with &#9829; by
-          <a href="/about#team" class="text-blue-500" title="Meet Our Team"
-            >Our Team</a
-          >.
-        </p>
-      </div>
-    </footer>
-    <script src="/src/assets/js/scripts.js" async></script>
-  </body>
+    </section>
+
+    <section class="container feature-grid" aria-label="Platform features">
+      <article class="feature-card">
+        <div class="feature-icon">01</div>
+        <h3>Efficient image processing</h3>
+        <p>Upload aerial imagery and receive fast, visual analytical results in the browser.</p>
+      </article>
+      <article class="feature-card">
+        <div class="feature-icon">02</div>
+        <h3>Vegetation insights</h3>
+        <p>Estimate green cover and distinguish vegetated areas from idle or developed land.</p>
+      </article>
+      <article class="feature-card">
+        <div class="feature-icon">03</div>
+        <h3>Decision-ready data</h3>
+        <p>Combine mapping, enumeration, and historical climate views for clearer planning.</p>
+      </article>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <span>© 2026 TreeSense Imaging</span>
+      <a href="predict.html">Explore the platform →</a>
+    </div>
+  </footer>
+  <script src="src/assets/js/script.js"></script>
+</body>
 </html>

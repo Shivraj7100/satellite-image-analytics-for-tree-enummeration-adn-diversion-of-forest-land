@@ -1,28 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
-		<title>Rainfall</title>
-	</head>
-	<style>
-		.container {
-			max-width: 800px;
-			margin: 0 auto;
-		}
-		.rad {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-	</style>
-	<body>
-<center><h2>Rainfall Departure over last 10 years</h2></center>
-		<div id="bar" class="container">
-            <canvas id="mybarChart" width="800" height="500"></canvas>
-        </div>
-
-	<script src="/src/assets/js/bar.js"></script>
-	</body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rainfall History — TreeSense</title>
+  <link rel="stylesheet" href="src/assets/css/styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <main class="container workspace">
+    <div class="page-head">
+      <span class="eyebrow">Historical sample</span>
+      <h1>Rainfall departure</h1>
+      <p>Ten-year rainfall departure overview for Bhopal.</p>
+    </div>
+    <section class="panel chart-card">
+      <div class="chart-wrap">
+        <canvas id="mybarChart"></canvas>
+      </div>
+    </section>
+  </main>
+  <script src="src/assets/js/bar.js"></script>
+</body>
 </html>
