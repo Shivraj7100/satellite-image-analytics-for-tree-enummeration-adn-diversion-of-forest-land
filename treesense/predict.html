@@ -1,93 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="style.css" />
-    <title>Analysis</title>
-
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-      }
-
-      header {
-        background-color: #333;
-        color: white;
-        padding: 10px;
-        text-align: center;
-      }
-
-      .toggle-buttons {
-        margin-top: 10px;
-      }
-
-      .toggle-buttons button {
-        background-color: #4caf50;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        margin: 5px;
-        cursor: pointer;
-      }
-
-      .iframe-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 80vh;
-      }
-
-      iframe {
-        width: 100%;
-        height: 100%;
-        border: none;
-      }
-    </style>
-  </head>
-  <body>
-    <header>
-      <h1>Analysis</h1>
-      <div class="toggle-buttons">
-        <button id="detection-button">Tree Count</button>
-        <button id="segmentation-button">Green Cover</button>
-        <button id="species-button">Tree Species</button>
-        <button id="path-button">Optimal Pathing</button>
-        <button id="historical-button">Historical Data</button>
-      </div>
-    </header>
-    <div class="iframe-container">
-      <iframe id="model-iframe" src="/dist/index.html"></iframe>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Analytics — TreeSense</title>
+  <link rel="icon" href="public/images/favicon.ico">
+  <link rel="stylesheet" href="src/assets/css/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="index.html"><img src="public/images/treeicon.png" alt=""><span>TreeSense</span></a>
+      <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+      <nav class="nav" aria-label="Main navigation">
+        <a href="index.html">Home</a><a class="active" href="predict.html">Analytics</a><a href="historical_data.html">Climate</a>
+      </nav>
     </div>
-    <script>
-      const detectionButton = document.getElementById("detection-button");
-      const segmentationButton = document.getElementById("segmentation-button");
-      const speciesButton = document.getElementById("species-button");
-      const pathButton = document.getElementById("path-button");
-      const historicalButton = document.getElementById("historical-button");
-      const modelIframe = document.getElementById("model-iframe");
+  </header>
 
-      detectionButton.addEventListener("click", () => {
-        modelIframe.src = "./dist/index.html";
-      });
+  <main class="container workspace">
+    <div class="page-head"><span class="eyebrow">Analysis workspace</span><h1>Forest analytics</h1><p>Choose a tool to inspect imagery and environmental patterns.</p></div>
+    <div class="workspace-grid">
+      <aside class="panel side-nav" aria-label="Analytics tools">
+        <button class="active" type="button" data-page="object_detection.html">Tree enumeration</button>
+        <button type="button" data-page="object_segmentation.html">Green cover</button>
+        <button type="button" data-page="tree_species.html">Map boundary</button>
+        <button type="button" data-page="optimal_path.html">Land assessment</button>
+        <button type="button" data-page="historical_data.html">Historical climate</button>
+      </aside>
+      <section class="panel iframe-shell">
+        <iframe id="analysis-frame" title="Selected analysis tool" src="object_detection.html"></iframe>
+      </section>
+    </div>
+  </main>
 
-      segmentationButton.addEventListener("click", () => {
-        modelIframe.src = "object_segmentation.html";
-      });
-
-      speciesButton.addEventListener("click", () => {
-        modelIframe.src = "tree_species.html";
-      });
-
-      pathButton.addEventListener("click", () => {
-        modelIframe.src = "optimal_path.html";
-      });
-
-      historicalButton.addEventListener("click", () => {
-        modelIframe.src = "historical_data.html";
-      });
-    </script>
-  </body>
+  <footer class="footer"><div class="container footer-inner"><span>© 2026 TreeSense Imaging</span><a href="index.html">Back to home</a></div></footer>
+  <script src="src/assets/js/script.js"></script>
+  <script>
+    const frame = document.getElementById('analysis-frame');
+    document.querySelectorAll('.side-nav button').forEach(button => button.addEventListener('click', () => {
+      document.querySelectorAll('.side-nav button').forEach(item => item.classList.remove('active'));
+      button.classList.add('active');
+      frame.src = button.dataset.page;
+    }));
+  </script>
+</body>
 </html>

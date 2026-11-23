@@ -1,169 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Google Map TreeSense</title>
-    <style>
-    /* Reset default margin and padding for all elements */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-/* Apply a background color to the body */
-body {
-    background-color: #f4f4f4;
-    font-family: Arial, sans-serif;
-    color: #333;
-    text-align: center;
-}
-
-/* Style the header */
-h1 {
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: #007BFF; /* Blue color for the header */
-}
-
-/* Style the map container */
-#map {
-    height: 400px;
-    width: 80%; /* Responsive width */
-    margin: 0 auto;
-    border: 2px solid #ddd;
-    border-radius: 5px;
-}
-
-/* Style the output container */
-#output {
-    margin-top: 20px;
-    padding: 20px;
-    background-color: #fff;
-    border: 2px solid #ddd;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-/* Style the cropped image */
-#croppedImage {
-    max-width: 100%;
-    height: auto;
-    margin-top: 10px;
-}
-
-/* Style the location info div */
-#locationInfo {
-    margin-top: 20px;
-    text-align: center;
-}
-
-/* Style paragraph elements inside location info */
-#locationInfo p {
-    margin: 5px 0;
-    font-size: 16px;
-}
-
-/* Style the drawing control buttons */
-.gm-style-drawing-panel {
-    background-color: rgba(255, 255, 255, 0.9);
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-}
-
-/* Style the drawing control buttons */
-.gm-style-drawing-control {
-    background-color: #007BFF;
-    color: #fff;
-    font-weight: bold;
-    border: none;
-    border-radius: 5px;
-    margin: 5px;
-    cursor: pointer;
-}
-
-/* Style the drawing control buttons on hover */
-.gm-style-drawing-control:hover {
-    background-color: #0056b3; /* Darker blue on hover */
-}
-
-/* Style the drawing control buttons when active */
-.gm-style-drawing-control.active {
-    background-color: #ff5722; /* Orange color for active button */
-}
-
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Map Boundary — TreeSense</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="src/assets/css/styles.css">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="src/assets/js/script.js"></script>
+  <style>
+    .map-shell {
+        height: 520px;
+        border-radius: 14px;
+        overflow: hidden;
+        border: 1px solid var(--line);
+    }
+    #map {
+        height: 100%;
+    }
+  </style>
 </head>
 <body>
-    <h1>Draw Your Map Boundary</h1>
-    <div id="map"></div>
-    <div id="output">
-        <h2>Cropped Image</h2>
-        <img id="croppedImage" src="" alt="Cropped Image" crossorigin="anonymous">
-       <div id="locationInfo"></div>
+  <main class="container workspace">
+    <div class="page-head">
+      <span class="eyebrow">Area selection</span>
+      <h1>Map boundary</h1>
+      <p>Click two points to draw a rectangular study area.</p>
     </div>
-
-    <script>
-        // Initialize the map
-        function initMap() {
-            const map = new google.maps.Map(document.getElementById('map'), {
-                center: { lat: 23.2599, lng: 77.4126 }, // Default center (Bhopal)
-                zoom: 12, // Default zoom level
-            });
-
-            let currentRectangle = null; // To keep track of the current rectangle
-
-            // Add event listeners to draw custom boundaries on the map
-            const drawingManager = new google.maps.drawing.DrawingManager({
-                drawingMode: google.maps.drawing.OverlayType.RECTANGLE,
-                drawingControl: true,
-                drawingControlOptions: {
-                    position: google.maps.ControlPosition.TOP_CENTER,
-                    drawingModes: ['rectangle'],
-                },
-            });
-            
-            drawingManager.setMap(map);
-
-            google.maps.event.addListener(drawingManager, 'overlaycomplete', function(event) {
-                if (currentRectangle) {
-                    currentRectangle.setMap(null); // Remove the previous rectangle
-                }
-                currentRectangle = event.overlay;
-
-                // Capture the bounds of the drawn rectangle
-                const bounds = currentRectangle.getBounds();
-                console.log('Captured Bounds:', bounds);
-
-                // Generate a URL to the Cloudflare Workers proxy script
-                const proxyUrl = 'https://gmap-sih-img-proxy.vipulchaturvedi.workers.dev/'; // Replace with your Cloudflare Workers URL
-
-                // Create a new image element
-                const img = new Image();
-                
-                // Set the image source to the Cloudflare Workers proxy URL
-                img.src = `${proxyUrl}?center=${bounds.getCenter().lat()},${bounds.getCenter().lng()}&zoom=15&size=640x640&path=fillcolor:transparent|${bounds.getNorthEast().toUrlValue()}|${bounds.getNorthEast().lat()},${bounds.getSouthWest().lng()}|${bounds.getSouthWest().toUrlValue()}|${bounds.getSouthWest().lat()},${bounds.getNorthEast().lng()}&key=AIzaSyCpzV2uci8gLyp8si2idL0Gy1PLUe_J8bU`;
-
-                // Display the cropped image
-                const croppedImage = document.getElementById('croppedImage');
-                croppedImage.src = img.src;
-
-                // Get the location info of the cropped image
-                const locationInfo = {
-                    centerLat: bounds.getCenter().lat(),
-                    centerLng: bounds.getCenter().lng(),
-                    zoom: 15,
-                };
-
-                // Display location info on the web page
-                const locationInfoDiv = document.getElementById('locationInfo');
-                locationInfoDiv.innerHTML = `<p>Center Latitude: ${locationInfo.centerLat}</p><p>Center Longitude: ${locationInfo.centerLng}</p><p>Zoom Level: ${locationInfo.zoom}</p>`;
-            });
+    <section class="panel upload-panel">
+      <p id="status" role="status">Choose the first corner.</p>
+      <div class="map-shell">
+        <div id="map" aria-label="Interactive map"></div>
+      </div>
+      <div class="status-row">
+        <div class="metric">
+          <span>Northwest corner</span>
+          <strong id="northwest">—</strong>
+        </div>
+        <div class="metric">
+          <span>Southeast corner</span>
+          <strong id="southeast">—</strong>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script>
+    const map = L.map('map').setView([23.2599, 77.4126], 12);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors',
+        maxZoom: 19
+    }).addTo(map);
+    let first = null,
+        rectangle = null,
+        marker = null;
+    map.on('click', event => {
+        if (!first) {
+            first = event.latlng;
+            marker = L.circleMarker(first, {
+                radius: 6,
+                color: '#1f7a4d',
+                fillOpacity: .9
+            }).addTo(map);
+            document.getElementById('status').textContent = 'Choose the opposite corner.';
+        } else {
+            if (rectangle) rectangle.remove();
+            const second = event.latlng,
+                bounds = L.latLngBounds(first, second);
+            rectangle = L.rectangle(bounds, {
+                color: '#1f7a4d',
+                weight: 2,
+                fillOpacity: .12
+            }).addTo(map);
+            if (marker) {
+                marker.remove();
+                marker = null
+            }
+            const sw = bounds.getSouthWest(),
+                ne = bounds.getNorthEast();
+            document.getElementById('northwest').textContent = `${ne.lat.toFixed(5)}, ${sw.lng.toFixed(5)}`;
+            document.getElementById('southeast').textContent = `${sw.lat.toFixed(5)}, ${ne.lng.toFixed(5)}`;
+            document.getElementById('status').textContent = 'Study area selected. Click the map to draw a new area.';
+            first = null
         }
-    </script>
-    
-    <!-- Include the Google Maps API script with your API key -->
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCpzV2uci8gLyp8si2idL0Gy1PLUe_J8bU&libraries=drawing&callback=initMap"></script>
+    });
+  </script>
 </body>
 </html>

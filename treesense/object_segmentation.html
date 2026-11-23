@@ -1,7 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Green Cover Estimator</title>
+  <link rel="stylesheet" href="src/assets/css/styles.css">
+  <script src="src/assets/js/script.js"></script>
+  <style>
     body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -50,88 +55,25 @@ button {
 #idle-land-percentage{
   font-size: 24px;
 }
-</style>
+  </style>
 </head>
 <body>
-
-<center><h2>Green Cover Estimator</h2>
-
-<input type="file" id="image-file" accept="image/*">
-<button onclick="processImage()">Process Image</button>
-</center>
-<h3>Processed Image:</h3>
-<div class="image-container">
-  <img id="uploaded-image" src="" alt="Uploaded Image">
-  <img id="processed-image" src="" alt="Processed Image">
-</div>
-
-<h4>Green Cover Percentage: <span id="green-cover-percentage"></span></h4>
-<p id="green-cover-percentage"></p>
-<h4>Idle Land Percentage: <span id="idle-land-percentage"></span></h4>
-<p id="idle-land-percentage"></p>
+  <main class="container workspace">
+    <div class="page-head"><span class="eyebrow">Vegetation analysis</span><h1>Green cover estimator</h1><p>Upload an aerial or satellite image to estimate vegetation coverage.</p></div>
+    <section class="panel upload-panel">
+      <div class="toolbar"><input class="file-input" type="file" id="image-file" accept="image/*"><button class="btn" id="process-button" type="button">Process image</button></div>
+      <p id="status" role="status"></p>
+      <div class="image-grid">
+        <article class="image-card"><h3>Original</h3><img id="uploaded-image" alt="Uploaded satellite or aerial image"></article>
+        <article class="image-card"><h3>Processed</h3><img id="processed-image" alt="Processed green cover image"></article>
+      </div>
+      <div class="status-row"><div class="metric"><span>Estimated green cover</span><strong id="green-cover-percentage">—</strong></div><div class="metric"><span>Estimated non-green area</span><strong id="idle-land-percentage">—</strong></div></div>
+    </section>
+  </main>
 <script>
-function processImage() {
-  const fileInput = document.getElementById('image-file');
-  const file = fileInput.files[0];
-  const reader = new FileReader();
-
-  reader.onloadend = () => {
-    const uploadedImage = document.getElementById('uploaded-image');
-    const processedImage = document.getElementById('processed-image');
-    const greenCoverPercentage = document.getElementById('green-cover-percentage');
-    const idleLandPercentage = document.getElementById('idle-land-percentage');
-
-    const img = new Image();
-    img.onload = () => {
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d');
-
-      canvas.width = img.width;
-      canvas.height = img.height;
-      ctx.drawImage(img, 0, 0);
-
-      let imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      let blackPixelCount = 0;
-
-      // Calculate the mean green value
-      let totalGreen = 0;
-      for (let i = 1; i < imageData.data.length; i += 4) {
-        totalGreen += imageData.data[i];
-      }
-      const meanGreen = totalGreen / (imageData.data.length / 4);
-
-      for (let i = 0; i < imageData.data.length; i += 4) {
-        let gray = (imageData.data[i + 1]) * 0.587; // Keep only green channel
-
-        if (gray < meanGreen / 1.5) {
-          gray = 0;
-          blackPixelCount++;
-        } else {
-          gray = 255;
-        }
-
-        imageData.data[i] = gray;   // Red channel
-        imageData.data[i + 1] = gray; // Green channel
-        imageData.data[i + 2] = gray; // Blue channel
-        imageData.data[i + 3] = 255;  // Alpha channel
-      }
-
-      ctx.putImageData(imageData, 0, 0);
-
-      // Display the processed image and green cover percentage
-      processedImage.src = canvas.toDataURL();
-      greenCoverPercentage.textContent = ((blackPixelCount / (canvas.width * canvas.height)) * 100).toFixed(2) + '%';
-      idleLandPercentage.textContent = (100 - ((blackPixelCount / (canvas.width * canvas.height)) * 100)).toFixed(2) + '%';
-    };
-    img.src = reader.result;
-
-    // Display the uploaded image
-    uploadedImage.src = reader.result;
-  };
-
-  reader.readAsDataURL(file);
-}
+const fileInput=document.getElementById('image-file'),uploaded=document.getElementById('uploaded-image'),processed=document.getElementById('processed-image'),status=document.getElementById('status');
+function processImage(){const file=fileInput.files?.[0];if(!file){status.textContent='Please select an image first.';return}if(!file.type.startsWith('image/')){status.textContent='Please select a valid image file.';return}status.textContent='Processing…';const reader=new FileReader();reader.onload=()=>{uploaded.src=reader.result;const img=new Image();img.onload=()=>{const canvas=document.createElement('canvas'),ctx=canvas.getContext('2d',{willReadFrequently:true});canvas.width=img.naturalWidth;canvas.height=img.naturalHeight;ctx.drawImage(img,0,0);const data=ctx.getImageData(0,0,canvas.width,canvas.height),pixels=data.data;let greenPixels=0,total=0;for(let i=0;i<pixels.length;i+=4){const r=pixels[i],g=pixels[i+1],b=pixels[i+2];const vegetation=g>r*1.05&&g>b*1.05&&g>75;if(vegetation)greenPixels++;total++}for(let i=0;i<pixels.length;i+=4){const r=pixels[i],g=pixels[i+1],b=pixels[i+2];const vegetation=g>r*1.05&&g>b*1.05&&g>75;pixels[i]=vegetation?38:220;pixels[i+1]=vegetation?160:220;pixels[i+2]=vegetation?72:220;pixels[i+3]=255}ctx.putImageData(data,0,0);const green=total?greenPixels/total*100:0;processed.src=canvas.toDataURL('image/jpeg',.9);document.getElementById('green-cover-percentage').textContent=`${green.toFixed(2)}%`;document.getElementById('idle-land-percentage').textContent=`${(100-green).toFixed(2)}%`;status.textContent='Analysis complete.'};img.src=reader.result};reader.readAsDataURL(file)}
+fileInput.addEventListener('change',processImage);document.getElementById('process-button').addEventListener('click',processImage);
 </script>
-
 </body>
 </html>

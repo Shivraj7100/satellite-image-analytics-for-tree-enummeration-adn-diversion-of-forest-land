@@ -1,7 +1,18 @@
 // JavaScript code to toggle mobile menu visibility
-const mobileMenuIcon = document.querySelector('.mobile-menu-icon');
-const mobileMenu = document.querySelector('.mobile-menu');
+document.addEventListener('DOMContentLoaded', () => {
+  const toggle = document.querySelector('.nav-toggle');
+  const nav = document.querySelector('.nav');
+  if (!toggle || !nav) return;
 
-mobileMenuIcon.addEventListener('click', () => {
-    mobileMenu.classList.toggle('active');
+  toggle.addEventListener('click', () => {
+    const open = nav.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', String(open));
+  });
+
+  nav.addEventListener('click', event => {
+    if (event.target.closest('a')) {
+      nav.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+  });
 });

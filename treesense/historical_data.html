@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weather App</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Climate Data — TreeSense</title>
+  <link rel="icon" href="public/images/favicon.ico">
+  <link rel="stylesheet" href="src/assets/css/styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <style>
         body {
   font-family: Arial, sans-serif;
   background-color: #f4f4f4;
@@ -55,17 +57,29 @@ canvas {
     </style>
 </head>
 <body>
-    <h1>Weather Data</h1>
-    <form id="location-form">
-        <input type="text" id="location" placeholder="Enter Location">
-        <button type="button" id="get-weather">Get Weather</button>
-    </form>
-    <div id="weather" style="display: none;">
-        <h2>Current Weather</h2>
-        <div id="current-weather"></div>
-        <h2>Historical Weather</h2>
-        <canvas id="historical-chart"></canvas>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="index.html"><img src="public/images/treeicon.png" alt=""><span>TreeSense</span></a>
+      <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+      <nav class="nav" aria-label="Main navigation"><a href="index.html">Home</a><a href="predict.html">Analytics</a><a class="active" href="historical_data.html">Climate</a></nav>
     </div>
-    <script src="/src/assets/js/app.js"></script>
+  </header>
+  <main class="container workspace">
+    <div class="page-head"><span class="eyebrow">Climate workspace</span><h1>Weather & rainfall context</h1><p>Search a location to view current conditions and a seven-day forecast.</p></div>
+    <section class="panel upload-panel">
+      <form id="location-form" class="toolbar">
+        <input class="file-input" type="search" id="location" placeholder="Enter city or location" aria-label="Location" required>
+        <button class="btn" type="submit" id="get-weather">Get weather</button>
+      </form>
+      <p id="weather-status" role="status"></p>
+      <div id="weather" hidden>
+        <div class="status-row"><div class="metric"><span>Temperature</span><strong id="temperature">—</strong></div><div class="metric"><span>Wind</span><strong id="wind">—</strong></div></div>
+        <div class="chart-wrap" style="margin-top:18px"><canvas id="historical-chart"></canvas></div>
+      </div>
+    </section>
+  </main>
+  <footer class="footer"><div class="container footer-inner"><span>© 2026 TreeSense Imaging</span><a href="predict.html">Open analytics</a></div></footer>
+  <script src="src/assets/js/script.js"></script>
+  <script src="src/assets/js/app.js"></script>
 </body>
 </html>
